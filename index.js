@@ -41,7 +41,9 @@ const checkLastPage = ($) => {
 }
 
 async function scrapeIndexProducts(page, url) {
-    await page.goto(url);
+    const response = await page.goto(url);
+    const headers = response.headers();
+    console.log(headers);
     await page.waitForSelector('.product-card');
     await autoScroll(page);   
     const  html = await page.evaluate(()=> document.body.innerHTML);
@@ -81,13 +83,14 @@ async function main() {
     const url = "https://esportes.centauro.com.br/nav/esportes/suplementos"
     const browser = await puppeteer.launch({
         headless: true,
-        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+        args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
     const page = await browser.newPage();
     await page.setUserAgent('Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1');
     // await page.setViewport({ width: 1920, height: 926 });
     const products = await scrapeIndexProducts(page, url);
-    // await browser.close();
+    console.log('End of puppeteer');
+    await browser.close();
 }
 
 
