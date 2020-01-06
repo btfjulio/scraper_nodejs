@@ -44,7 +44,8 @@ async function scrapeIndexProducts(page, url) {
     await page.goto(url);
     await page.waitForSelector('.product-card');
     await autoScroll(page);   
-    const  html = await page.evaluate(()=> document.body.innerHTML) 
+    const  html = await page.evaluate(()=> document.body.innerHTML);
+    
     const $ = cheerio.load(html);
     const results = $('.product-card') 
     .map((_, product) => {
@@ -88,5 +89,6 @@ async function main() {
     const products = await scrapeIndexProducts(page, url);
     // await browser.close();
 }
+
 
 main()
